@@ -1,5 +1,7 @@
 ﻿using ConsoleToWeb.Negocio;
 using ConsoleToWeb.Repositorio;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using System;
 
 namespace ConsoleToWeb
@@ -8,9 +10,17 @@ namespace ConsoleToWeb
     {
         static void Main(string[] args)
         {
-            var _repo = new FilmeRepositorio();
-            ImprimeLista(_repo.ParaVer);
-            ImprimeLista(_repo.Vistos);
+            IWebHost host = new WebHostBuilder()
+                .UseKestrel()
+                .UseStartup<Startup>()
+                .Build();
+            
+            host.Run();
+                
+
+            //var _repo = new FilmeRepositorio();
+            //ImprimeLista(_repo.ParaVer);
+            //ImprimeLista(_repo.Vistos);
         }
 
         static void ImprimeLista(ListaDeFilmes lista)
