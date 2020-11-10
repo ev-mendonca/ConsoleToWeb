@@ -16,17 +16,19 @@ namespace ConsoleToWeb
         public Task Roteamento(HttpContext context)
         {
             var _repo = new FilmeRepositorio();
-            var caminhosAtendidos = new Dictionary<string, string>
+            var caminhosAtendidos = new Dictionary<string, RequestDelegate>
             {
-                {"/Filmes/ParaVer",_repo.ParaVer.ToString() },
-                {"/Filmes/Vistos", _repo.Vistos.ToString() }
+                {"/Filmes/ParaVer", FilmesParaVer},
+                {"/Filmes/Vistos", FilmesVistos }
             };
 
             if(caminhosAtendidos.ContainsKey(context.Request.Path))
             {
-                return context.Response.WriteAsync(caminhosAtendidos[context.Request.Path]);
+                var requestDelegate = caminhosAtendidos[context.Request.Path];
+                return requestDelegate.Invoke(context);
             }
 
+            context.Response.StatusCode = 404;
             return context.Response.WriteAsync(context.Request.Path);
         }
 
@@ -34,6 +36,12 @@ namespace ConsoleToWeb
         {
             var _repo = new FilmeRepositorio();
             return contexto.Response.WriteAsync(_repo.ParaVer.ToString());
+        }
+
+        public Task FilmesVistos(HttpContext contexto)
+        {
+            var _repo = new FilmeRepositorio();
+            return contexto.Response.WriteAsync(_repo.Vistos.ToString());
         }
     }
 }
