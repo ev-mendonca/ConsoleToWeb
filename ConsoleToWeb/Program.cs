@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ConsoleToWeb.Negocio;
+using ConsoleToWeb.Repositorio;
+using System;
 
 namespace ConsoleToWeb
 {
@@ -6,7 +8,15 @@ namespace ConsoleToWeb
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var _repo = new FilmeRepositorio();
+            ImprimeLista(_repo.ParaVer);
+            ImprimeLista(_repo.Vistos);
         }
+
+        static void ImprimeLista(ListaDeFilmes lista)
+        {
+            Console.WriteLine(lista);
+        }
+
     }
 }
